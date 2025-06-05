@@ -1,0 +1,16 @@
+[
+  {
+    "type": "above",
+    "id": "bebca24e-a1ad-455a-95bc-c716a3d5bbe5",
+    "userId": "a0821448-1cae-4000-bd04-937b0f852de6",
+    "stockSymbol": "AAPL",
+    "thresholdPrice": "20"
+  },
+  {
+    "type": "below",
+    "id": "32c2f25f-91fd-4f95-85bb-21752f1bd271",
+    "userId": "30057bd5-b54e-4a30-910e-4c6660daed18",
+    "stockSymbol": "AMZN",
+    "thresholdPrice": "20"
+  }
+]
