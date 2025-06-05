@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace StockPriceMonitoring.Alerts.Internals {
+namespace StockPriceMonitoring.Alerts.Internals.Models {
     internal static class AlertRepository {
         
         private static readonly string FilePath = Path.Combine(AppContext.BaseDirectory, "Data", "UserAlertsData.json");
@@ -24,6 +24,17 @@ namespace StockPriceMonitoring.Alerts.Internals {
 
             return JsonConvert.DeserializeObject<IEnumerable<AlertEntity>>(fileContent)?
                 .Where(alert => alert.UserId == userId);
+        }
+
+        public static async Task<IEnumerable<AlertEntity>?> GetSymbolAlertEntitiesFromFile(string symbol, CancellationToken cancellationToken) {
+            if (!File.Exists(FilePath)) {
+                return null;
+            }
+
+            var fileContent = await File.ReadAllTextAsync(FilePath, cancellationToken);
+
+            return JsonConvert.DeserializeObject<IEnumerable<AlertEntity>>(fileContent)?
+                .Where(alert => alert.StockSymbol == symbol);
         }
 
         public static async Task<bool> AddAlertEntitiesToFile(AlertEntity alertEntity, CancellationToken cancellationToken) {

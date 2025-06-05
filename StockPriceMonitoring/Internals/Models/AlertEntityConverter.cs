@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace StockPriceMonitoring.Alerts.Internals {
+namespace StockPriceMonitoring.Alerts.Internals.Models {
     public class AlertEntityConverter : JsonConverter<AlertEntity> {
         public override AlertEntity ReadJson(JsonReader reader, Type objectType, AlertEntity? existingValue, bool hasExistingValue, JsonSerializer serializer) {
             var jo = JObject.Load(reader);

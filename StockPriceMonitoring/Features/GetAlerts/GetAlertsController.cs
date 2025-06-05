@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StockPriceMonitoring.Alerts.Internals;
+using StockPriceMonitoring.Alerts.Internals.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace StockPriceMonitoring.Alerts.Features.GetAlerts {

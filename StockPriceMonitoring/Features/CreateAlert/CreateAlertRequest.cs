@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using StockPriceMonitoring.Alerts.Internals;
+using StockPriceMonitoring.Alerts.Internals.Models;
 
 namespace StockPriceMonitoring.Alerts.Features.CreateAlert {
     public abstract class CreateAlertRequest {

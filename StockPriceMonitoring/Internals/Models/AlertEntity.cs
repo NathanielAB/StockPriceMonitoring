@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace StockPriceMonitoring.Alerts.Internals {
+namespace StockPriceMonitoring.Alerts.Internals.Models {
     public abstract class AlertEntity {
         [JsonProperty("type")]
         public abstract string Type { get; }
@@ -16,17 +16,27 @@ namespace StockPriceMonitoring.Alerts.Internals {
 
         [JsonProperty("thresholdPrice")]
         public decimal ThresholdPrice { get; set; }
+
+        public abstract bool IsThresholdReached(decimal currentPrice);
     }
 
     public sealed class AboveAlertEntity : AlertEntity {
         public const string SchemaReference = "above";
 
         public override string Type => SchemaReference;
+
+        public override bool IsThresholdReached(decimal currentPrice) {
+            return currentPrice >= ThresholdPrice;
+        }
     }
 
     public sealed class BelowAlertEntity : AlertEntity {
         public const string SchemaReference = "below";
 
         public override string Type => SchemaReference;
+
+        public override bool IsThresholdReached(decimal currentPrice) {
+            return currentPrice <= ThresholdPrice;
+        }
     }
 }

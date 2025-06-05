@@ -1,6 +1,8 @@
 using Newtonsoft.Json;
+using StockPriceMonitoring.Alerts;
 using StockPriceMonitoring.Alerts.Features.CreateAlert;
 using StockPriceMonitoring.Alerts.Internals;
+using StockPriceMonitoring.Alerts.Internals.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +11,9 @@ var converters = new List<JsonConverter> {
     new AlertEntityConverter()
 };
 
-builder.Services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.Converters = [
+builder.Services
+    .AddControllers()
+    .AddNewtonsoftJson(options => options.SerializerSettings.Converters = [
     .. options.SerializerSettings.Converters,
     .. converters
 ]);
@@ -17,6 +21,10 @@ builder.Services.AddControllers().AddNewtonsoftJson(options => options.Serialize
 JsonConvert.DefaultSettings = () => new JsonSerializerSettings {
     Converters = converters,
 };
+
+builder.Services.AddSingleton<IAlertChecker, AlertChecker>();
+builder.Services.AddSingleton<INotifyUser, NotifyUser>();
+builder.Services.AddHostedService<StockPricesRetrievalService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
