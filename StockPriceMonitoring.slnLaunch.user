@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "StockPriceMonitoring\\StockPriceMonitoring.Alerts.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "StockPriceMonitoring.StockPrices\\StockPriceMonitoring.StockPrices.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
