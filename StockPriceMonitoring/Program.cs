@@ -23,7 +23,7 @@ JsonConvert.DefaultSettings = () => new JsonSerializerSettings {
 };
 
 builder.Services.AddSingleton<IAlertChecker, AlertChecker>();
-builder.Services.AddSingleton<INotifyUser, NotifyUser>();
+builder.Services.AddSingleton<INotificationManager, NotificationManager>();
 builder.Services.AddHostedService<StockPricesRetrievalService>();
 
 builder.Services.AddEndpointsApiExplorer();

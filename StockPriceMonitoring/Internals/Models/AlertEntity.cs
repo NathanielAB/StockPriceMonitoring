@@ -17,6 +17,9 @@ namespace StockPriceMonitoring.Alerts.Internals.Models {
         [JsonProperty("thresholdPrice")]
         public decimal ThresholdPrice { get; set; }
 
+        [JsonProperty("triggered")]
+        public bool Triggered { get; set; }
+
         public abstract bool IsThresholdReached(decimal currentPrice);
     }
 
