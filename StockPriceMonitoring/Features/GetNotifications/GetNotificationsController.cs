@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using StockPriceMonitoring.Alerts.Internals;
+using System.ComponentModel.DataAnnotations;
 
 namespace StockPriceMonitoring.Alerts.Features.GetNotifications {
     [ApiController]
@@ -10,8 +11,8 @@ namespace StockPriceMonitoring.Alerts.Features.GetNotifications {
             this.notificationManager = notificationManager;
         }
 
-        [HttpGet("/notifications/{userId}")]
-        public async Task GetNotifications(Guid userId, CancellationToken cancellationToken) {
+        [HttpGet("/notifications")]
+        public async Task GetNotifications([FromHeader(Name = "x-user-id"), Required] Guid userId, CancellationToken cancellationToken) {
             HttpContext.Response.Headers.Append("Content-Type", "text/event-stream");
 
             var stream = notificationManager.GetUserNotifications(userId);

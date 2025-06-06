@@ -70,7 +70,7 @@ namespace StockPriceMonitoring.Alerts.Internals.Models {
             }
 
             var alertIndex = alerts.FindIndex(alert => alert.Id == id);
-            if (alertIndex != -1) {
+            if (alertIndex == -1) {
                 return false;
             }
 

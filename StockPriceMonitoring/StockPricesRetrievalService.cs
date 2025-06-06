@@ -4,9 +4,9 @@ using StockPriceMonitoring.Alerts.Internals.Models;
 
 namespace StockPriceMonitoring.Alerts {
     public class StockPricesRetrievalService : BackgroundService {
-        private readonly static string FilePath = Path.Combine(AppContext.BaseDirectory, "Data", "StockPricesMockData.json");
+        
         private readonly static Random random = new();
-        private List<Stock> stocks = [];
+        private IEnumerable<Stock> stocks = [];
 
         private readonly ILogger<StockPricesRetrievalService> logger;
         private readonly IAlertChecker alertChecker;
@@ -17,16 +17,11 @@ namespace StockPriceMonitoring.Alerts {
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken) {
-            if (!File.Exists(FilePath)) {
-                logger.LogError("Data file not found at: {Path}", FilePath);
-                return;
-            }
-
-            stocks = JsonConvert.DeserializeObject<List<Stock>>(await File.ReadAllTextAsync(FilePath, stoppingToken)) ?? [];
+            stocks = await StockRepository.GetStocksFromFile(stoppingToken) ?? [];
 
             while (!stoppingToken.IsCancellationRequested) {
                 UpdateStockPrices();
-                logger.LogDebug("Stock prices updated: {Stocks}", JsonConvert.SerializeObject(stocks));
+                logger.LogInformation("Stock prices updated: {Stocks}", JsonConvert.SerializeObject(stocks));
 
                 foreach(var stock in stocks) {
                     await alertChecker.CheckAlertsAsync(stock.Symbol, stock.Price, stoppingToken);
