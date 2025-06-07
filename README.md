@@ -16,7 +16,7 @@ x-user-id: "e5669ce9-be81-4ed7-99f7-741c57aab250"
 
 Payload:
 {
-  "type": "above",
+  "type": "above", //or "below"
   "stockSymbol": "AAPL",
   "thresholdPrice": 200.0,
 }
