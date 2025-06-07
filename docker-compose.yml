@@ -1,0 +1,8 @@
+services:
+  app:
+    container_name: stock_price_monitoring_app
+    build:
+      context: ./
+      dockerfile: ./StockPriceMonitoring/Dockerfile
+    ports:
+      - 5200:8080
