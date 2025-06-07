@@ -3,9 +3,15 @@ using StockPriceMonitoring.Alerts.Internals.Models;
 
 namespace StockPriceMonitoring.Alerts.Features.ResetAlerts {
     public class ResetAlertsController : Controller {
+        private readonly AlertRepository alertRepository;
+
+        public ResetAlertsController(AlertRepository alertRepository) {
+            this.alertRepository = alertRepository;
+        }
+
         [HttpPost("/alerts/reset")]
         public async Task ResetAlerts(CancellationToken cancellationToken) {
-            var alerts = await AlertRepository.GetAlertEntitiesFromFile(cancellationToken);
+            var alerts = await alertRepository.GetAlertEntitiesFromFile(cancellationToken);
             if (alerts is null) {
                 HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
                 return;
@@ -17,7 +23,7 @@ namespace StockPriceMonitoring.Alerts.Features.ResetAlerts {
             });
 
             foreach (var alert in newAlerts) {
-                await AlertRepository.UpdateAlertEntitiesToFile(alert.Id, alert, cancellationToken);
+                await alertRepository.UpdateAlertEntitiesToFile(alert.Id, alert, cancellationToken);
             }
         }
     }

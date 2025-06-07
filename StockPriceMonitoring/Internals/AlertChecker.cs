@@ -4,14 +4,16 @@ namespace StockPriceMonitoring.Alerts.Internals {
     public class AlertChecker : IAlertChecker {
 
         private readonly INotificationManager notificationManager;
+        private readonly AlertRepository alertRepository;
 
-        public AlertChecker(INotificationManager notificationManager) {
+        public AlertChecker(INotificationManager notificationManager, AlertRepository alertRepository) {
             this.notificationManager = notificationManager;
+            this.alertRepository = alertRepository;
         }
 
         public async Task CheckAlertsAsync(string symbol, decimal currentPrice, CancellationToken cancellationToken = default) {
 
-            var alerts = await AlertRepository.GetSymbolAlertEntitiesFromFile(symbol, cancellationToken);
+            var alerts = await alertRepository.GetSymbolAlertEntitiesFromFile(symbol, cancellationToken);
 
             var validAlerts = alerts?.Where(alert => alert.IsThresholdReached(currentPrice) && !alert.Triggered);
 
@@ -25,7 +27,7 @@ namespace StockPriceMonitoring.Alerts.Internals {
                     $"Threshold reached for your Alert on {alert.StockSymbol}, the price is now at {currentPrice}");
 
                 alert.Triggered = true;
-                await AlertRepository.UpdateAlertEntitiesToFile(alert.Id, alert, cancellationToken);
+                await alertRepository.UpdateAlertEntitiesToFile(alert.Id, alert, cancellationToken);
             }
         }
     }

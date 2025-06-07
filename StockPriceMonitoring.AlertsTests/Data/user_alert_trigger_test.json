@@ -1,0 +1,9 @@
+﻿[
+  {
+    "type": "above",
+    "id": "7dcb296d-557e-485d-860a-3b78dd40194b",
+    "userId": "01850077-1578-459c-9d92-fb18257f77e2",
+    "stockSymbol": "AAPL",
+    "thresholdPrice": "30"
+  }
+]

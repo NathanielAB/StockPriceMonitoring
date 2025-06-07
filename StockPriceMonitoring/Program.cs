@@ -5,21 +5,13 @@ using StockPriceMonitoring.Alerts.Internals.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var converters = new List<JsonConverter> {
-    new CreateAlertRequestConverter(),
-    new AlertEntityConverter()
-};
-
 builder.Services
     .AddControllers()
     .AddNewtonsoftJson(options => options.SerializerSettings.Converters = [
     .. options.SerializerSettings.Converters,
-    .. converters
+    new CreateAlertRequestConverter(),
+    new AlertEntityConverter()
 ]);
-
-JsonConvert.DefaultSettings = () => new JsonSerializerSettings {
-    Converters = converters,
-};
 
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowAll", policy => {
@@ -28,6 +20,11 @@ builder.Services.AddCors(options => {
             .AllowAnyHeader()
             .AllowAnyMethod();
     });
+});
+
+builder.Services.AddSingleton(_ => {
+    var path = Path.Combine(AppContext.BaseDirectory, "Data", "UserAlertsData.json");
+    return new AlertRepository(path);
 });
 
 builder.Services.AddSingleton<IAlertChecker, AlertChecker>();
