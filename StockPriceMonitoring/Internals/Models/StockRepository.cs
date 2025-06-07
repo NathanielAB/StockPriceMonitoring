@@ -11,5 +11,15 @@ namespace StockPriceMonitoring.Alerts.Internals.Models {
             var fileContent = await File.ReadAllTextAsync(FilePath, cancellationToken);
             return JsonConvert.DeserializeObject<IEnumerable<Stock>>(fileContent);
         }
+
+        public static async Task<bool> UpdateAllStocksFromFile(IEnumerable<Stock> stocks, CancellationToken cancellationToken) {
+            if (!File.Exists(FilePath)) {
+                return false;
+            }
+
+            await File.WriteAllTextAsync(FilePath, JsonConvert.SerializeObject(stocks), cancellationToken);
+
+            return true;
+        }
     }
 }

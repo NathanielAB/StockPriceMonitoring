@@ -1,5 +1,4 @@
 using Newtonsoft.Json;
-using StockPriceMonitoring.Alerts;
 using StockPriceMonitoring.Alerts.Features.CreateAlert;
 using StockPriceMonitoring.Alerts.Internals;
 using StockPriceMonitoring.Alerts.Internals.Models;
@@ -33,8 +32,11 @@ builder.Services.AddCors(options => {
 
 builder.Services.AddSingleton<IAlertChecker, AlertChecker>();
 builder.Services.AddSingleton<INotificationManager, NotificationManager>();
+builder.Services.AddSingleton<IStockPriceFetcher, StockPriceFetcher>();
+builder.Services.Decorate<IStockPriceFetcher, StockPriceFetcherCached>();
 builder.Services.AddHostedService<StockPricesRetrievalService>();
 
+builder.Services.AddMemoryCache();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
