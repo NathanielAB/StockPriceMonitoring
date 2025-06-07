@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Price Alerts</title>
+</head>
+<body>
+    <h1>Stock Alert Notifications</h1>
+
+    <label for="userId">Enter User ID:</label>
+    <input type="text" id="userId" />
+    <button onclick="connect()">Connect</button>
+
+    <h2>Incoming Alerts</h2>
+    <ul id="alerts"></ul>
+
+    <script>
+        function connect() {
+            const userId = document.getElementById('userId').value;
+            if (!userId) {
+                alert('Please enter a user ID');
+                return;
+            }
+
+            fetch('https://localhost:7152/notifications',
+                {
+                    headers: {
+                        "x-user-id": "a0821448-1cae-4000-bd04-937b0f852de6"
+                    }
+                })
+                .then(response => {
+                    const stream = response.body;
+                    const reader = stream.getReader();
+                    const readChunk = () => {
+                        reader.read()
+                            .then(({
+                                value,
+                                done
+                            }) => {
+                                if (done) {
+                                    console.log('Stream finished');
+                                    return;
+                                }
+
+                                const chunkString = new TextDecoder().decode(value);
+                                const item = document.createElement('li');
+                                item.textContent = chunkString;
+                                document.getElementById('alerts').appendChild(item);
+
+                                readChunk();
+                            })
+                            .catch(error => {
+                                console.error(error);
+                            });
+                    };
+                    readChunk();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    </script>
+</body>
+</html>

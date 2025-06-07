@@ -22,6 +22,15 @@ JsonConvert.DefaultSettings = () => new JsonSerializerSettings {
     Converters = converters,
 };
 
+builder.Services.AddCors(options => {
+    options.AddPolicy("AllowAll", policy => {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddSingleton<IAlertChecker, AlertChecker>();
 builder.Services.AddSingleton<INotificationManager, NotificationManager>();
 builder.Services.AddHostedService<StockPricesRetrievalService>();
@@ -35,6 +44,8 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 
